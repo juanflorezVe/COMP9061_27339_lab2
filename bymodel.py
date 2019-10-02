@@ -39,10 +39,10 @@ def build_full_dic(path, word_bag):
         files.extend(filenames)
         break
     word_set = set()
-#    print("start the loop")
+#   print("start the loop")
     for f in files:
         tmp_words = set(open(path+"/"+f).read().split())
-        word_set = word_set.union(word_set, tmp_words)
+        word_set.update(dict.fromkeys(tmp_words))
 #       print("{} processed ".format(f))
 
     word_bag.update(dict.fromkeys(word_set, 0))
@@ -52,19 +52,19 @@ def build_full_dic(path, word_bag):
 
 def count_words(path, count_words):
     """
-    Given a path and a dictionary of words, count all the ocurrence of the words
-    in the directory. if a word is in a file, but not in the directory,
+    Given a path and a dictionary of words, count all the ocurrence of the
+    words in the directory. if a word is in a file, but not in the directory,
     it gets added.
     """
     files = []
     for (dirpath, dirnames, filenames) in walk(path):
         files.extend(filenames)
         break
-    
+
     for f in files:
         print(f)
         tmp_words = open(path+"/"+f).read().split()
-        
+
         for w in tmp_words:
             if w not in count_words.keys():
                 count_words[w] = 1
@@ -72,6 +72,4 @@ def count_words(path, count_words):
                 count_words[w] += 1
         print("finished {}".format(f))
 
-    return len(count_words) # should'n change... (?)
-    
-    
+    return len(count_words)  # should'n change... (?)

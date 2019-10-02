@@ -69,10 +69,9 @@ def test_count_words_in_directory():
     """
     create_test_data_directory()
     counted_words = targetWordBag.copy()
-    
+
     bym.count_words(path, counted_words)
-    targetWordCount = {"the": 2, "a": 4, "is": 1, "word": 1, "words": 2, 
-                       "no": 1, "some": 1, "are": 2, "common": 1, "others": 1, 
+    targetWordCount = {"the": 2, "a": 4, "is": 1, "word": 1, "words": 2,
+                       "no": 1, "some": 1, "are": 2, "common": 1, "others": 1,
                        "not": 1}
-    assert(counted_words ==  targetWordCount )
-    
+    assert(counted_words == targetWordCount)
