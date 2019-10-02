@@ -60,3 +60,19 @@ def test_build_read_word_dict():
     count = bym.count_word_dict(fileName1, word_dict)
     assert(targetDictionary == word_dict)
     assert(count == 6)
+
+
+def test_count_words_in_directory():
+    """
+    given a directory, and a dictionary of words,
+    record the occurrence of each word in all the files in the directory.
+    """
+    create_test_data_directory()
+    counted_words = targetWordBag.copy()
+    
+    bym.count_words(path, counted_words)
+    targetWordCount = {"the": 2, "a": 4, "is": 1, "word": 1, "words": 2, 
+                       "no": 1, "some": 1, "are": 2, "common": 1, "others": 1, 
+                       "not": 1}
+    assert(counted_words ==  targetWordCount )
+    

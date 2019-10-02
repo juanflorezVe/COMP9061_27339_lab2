@@ -26,17 +26,22 @@ else:
 
 full_dictionary ={}
 
-count_neg = bym.build_full_dic("data/trainSmall/neg", full_dictionary)
+total_neg = bym.build_full_dic("data/trainSmall/neg", full_dictionary)
 
-print(count_neg)
+print(total_neg)
 
-count_positive = bym.build_full_dic("data/trainSmall/pos", full_dictionary)
+total_positive = bym.build_full_dic("data/trainSmall/pos", full_dictionary)
 
-print(count_positive)
+print(total_positive)
 
 f = open(path+"/dictionary.pkl","wb")
 pickle.dump(full_dictionary,f)
 f.close()
+
+# Create a copy of full_dict to record the occurrence of each word in
+# negative reviews
+
+count_neg = dict(full_dictionary)
 
 
 
