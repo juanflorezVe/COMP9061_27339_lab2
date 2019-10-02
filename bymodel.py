@@ -25,7 +25,6 @@ def count_word_dict(fileName, word_dict):
                 else:
                     word_dict[w] += 1
 
-            print(tmp_words)
     return len(word_dict)
 
 
