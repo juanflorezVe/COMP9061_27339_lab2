@@ -39,11 +39,11 @@ def build_full_dic(path, word_bag):
         files.extend(filenames)
         break
     word_set = set()
-    print("start the loop")
+#    print("start the loop")
     for f in files:
         tmp_words = set(open(path+"/"+f).read().split())
         word_set = word_set.union(word_set, tmp_words)
-        print(word_set)
+#       print("{} processed ".format(f))
 
     word_bag.update(dict.fromkeys(word_set, 0))
 
