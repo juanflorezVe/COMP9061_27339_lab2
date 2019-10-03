@@ -7,15 +7,23 @@ Created on Tue Oct  1 13:41:41 2019
 """
 import bymodel as bym
 import os
+import pytest
 
 # Create a adictionary of words key = word and amount
 
-docClass1 = "the the a a a is a word words no"
+
+@pytest.fixture
+def docClass1():
+    return "the the a a a is a word words no"
+
+
 docClass2 = "some words are common others are not"
 
 w_count_c1 = {"the": 2, "a": 4, "is": 1, "word": 1, "no": 1, "words": 1}
 
-w_count_c2 = {"some": 1, "words": 1, "are": 2, "common": 1,
+@pytest.fixture
+def w_count_c2():
+    return {"some": 1, "words": 1, "are": 2, "common": 1,
               "others":1, "not":1 }
 
 targetWordBag = {"the": 0, "a": 0, "is": 0, "word": 0, "words": 0, "no": 0,
@@ -26,7 +34,7 @@ fileName1 = path+"/input_test1.txt"
 fileName2 = path+"/input_test2.txt"
 
 
-def create_test_data_directory():
+def create_test_data_directory(docClass1):
 
     try:
         os.mkdir(path)
@@ -42,12 +50,12 @@ def create_test_data_directory():
         fl2.write(docClass2)
 
 
-def test_build_full_dictionary():
+def test_build_full_dictionary(docClass1):
     """
     Given a folder, get all the words in the folder and
     make a dictionary initialized to 0
     """
-    create_test_data_directory()
+    create_test_data_directory(docClass1)
 
     word_bag = {}
     count = bym.build_full_dic(path, word_bag)
@@ -55,23 +63,23 @@ def test_build_full_dictionary():
     assert(11 == count)
 
 
-def test_build_read_word_dict():
+def test_build_read_word_dict(docClass1):
     """
     Create a file, build a dictionay
     """
-    create_test_data_directory()
+    create_test_data_directory(docClass1)
     word_dict = {}
     count = bym.count_word_dict(fileName1, word_dict)
     assert(w_count_c1 == word_dict)
     assert(count == 6)
 
 
-def test_count_words_in_directory():
+def test_count_words_in_directory(docClass1):
     """
     given a directory, and a dictionary of words,
     record the occurrence of each word in all the files in the directory.
     """
-    create_test_data_directory()
+    create_test_data_directory(docClass1)
     counted_words = targetWordBag.copy()
 
     total_words = bym.count_words(path, counted_words)
@@ -81,7 +89,7 @@ def test_count_words_in_directory():
     assert(counted_words == targetWordCount)
     assert(total_words == 11)
 
-def test_prob_word_given_class():
+def test_prob_word_given_class(docClass1, w_count_c2):
     """
     Given a word, and a class, calculate the number p; 0 <= p <= 1
     count of appearences of w in all the docs in c, over the total
@@ -95,4 +103,5 @@ def test_prob_word_given_class():
     p = bym.prob_of_word("common", w_count_c2)
     manual_calc = w_count_c2["common"]/sum(w_count_c2.values())
     assert(manual_calc == p)
+    
     
