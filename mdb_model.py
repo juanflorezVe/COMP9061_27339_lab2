@@ -80,7 +80,7 @@ all_words_negative = sum(count_neg.values())
 
 print("total set of negative words {}".format(total_neg))
 print("total set of positive words {}".format(total_pos))
-print("total amount of negative words {}".format(all_words_negative))
-print("total amount of positive words {}".format(all_words_positive))
+print("total amount of words in negative docs {}".format(all_words_negative))
+print("total amount of words in positive docs {}".format(all_words_positive))
 print("total amount of words in all the docs {}".format(all_words_positive + 
       all_words_negative))
