@@ -8,6 +8,15 @@ Bayesian model library
 """
 from os import walk
 
+class classification():
+
+    def __init__(self, name):
+        self.name = name
+    
+    def __repr__(self):
+        return ("Class {}".format(self.name))
+
+        
 
 def count_word_dict(fileName, word_dict):
     """
@@ -73,3 +82,17 @@ def count_words(path, count_words):
         print("finished {}".format(f))
 
     return len(count_words)  # should'n change... (?)
+
+
+def prob_of_word(word, w_count: dict):
+    """
+    Given a word, a classification and a dictionary with the count of words
+    in the classification, return the probability that a word in class is the
+    that word 
+    
+    P(w|c) = [count(w in c)] / (total words in c)
+    
+    """
+    return w_count[word]/sum(w_count.values())
+    
+    return 1
