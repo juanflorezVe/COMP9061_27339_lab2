@@ -111,9 +111,12 @@ filePol1  = path_pol+"/pol_test1.txt"
 
 # """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-
-def create_test_data_directory(doc1, doc2, doc3, doc4):
-
+@pytest.fixture
+def mk_dat(doc1, doc2, doc3, doc4):
+    """
+    Make the test data:
+    all the folders and files
+    """
     try:
         os.mkdir(path)
         os.makedirs(path_comp)
@@ -136,24 +139,21 @@ def create_test_data_directory(doc1, doc2, doc3, doc4):
         fl4.write(doc4)
 
 
-def test_build_full_dictionary(doc1, doc2, doc3, doc4, dict_w_count_comp):
+def test_build_full_dictionary(mk_dat, dict_w_count_comp):
     """
     Given a folder, get all the words in all the docs in the folder and
     make a dictionary initialized to 0
     """
-    create_test_data_directory(doc1, doc2, doc3, doc4)
-
     comp_word_bag = {}
     count = bym.build_full_dic(path_comp, comp_word_bag)
     assert(comp_word_bag == dict.fromkeys(dict_w_count_comp, 0))
     assert(4 == count)
 
 
-def test_build_read_word_dict(doc1, doc2, doc3, doc4 , dict_univ):
+def test_build_read_word_dict(mk_dat, dict_univ):
     """
     Count the words in a document and update the dictionary
     """
-    create_test_data_directory(doc1, doc2, doc3, doc4)
     word_dict = dict_univ.copy()
     fileComp1_dict = {"Cloud": 2, "Spring": 0, "Software": 0,
             "Referendum": 0, "Java": 1, "Election": 0}
@@ -162,13 +162,12 @@ def test_build_read_word_dict(doc1, doc2, doc3, doc4 , dict_univ):
     assert(count == 6)
 
 
-def test_count_words_in_directory(doc1, doc2, doc3, doc4, dict_univ, 
+def test_count_words_in_directory(mk_dat, dict_univ, 
                                   u_dict_w_count_comp):
     """
     given a directory, and a dictionary of words,
     record the occurrence of each word in all the files in the directory.
     """
-    create_test_data_directory(doc1, doc2, doc3, doc4)
     counted_words = dict_univ.copy()  #Always create a copy 
 
     total_words = bym.count_words(path_comp, counted_words)
@@ -207,7 +206,6 @@ def test_prob_c():
     
     
 def test_make_dic_w_c(dict_univ, u_dict_w_count_comp):
-
     """
     P(w|c) for each word in the dictionary, for the given class
     """
