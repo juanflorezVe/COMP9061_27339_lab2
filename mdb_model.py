@@ -84,3 +84,16 @@ print("total amount of words in negative docs {}".format(all_words_negative))
 print("total amount of words in positive docs {}".format(all_words_positive))
 print("total amount of words in all the docs {}".format(all_words_positive + 
       all_words_negative))
+
+
+#===============================================================
+#
+#===============================================================
+
+neg_prob = bym.prob_class(train_path, train_path+"/neg")
+print("Probability of negative {}".format(neg_prob))
+
+pos_prob = bym.prob_class(train_path, train_path+"/pos")
+print("Probability of positive {}".format(neg_prob))
+
+

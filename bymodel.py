@@ -84,15 +84,51 @@ def count_words(path, count_words):
     return len(count_words)  # should'n change... (?)
 
 
-def prob_of_word(word, w_count: dict):
+def single_w_c(word, w_count: dict, total_set: int):
     """
-    Given a word, a classification and a dictionary with the count of words
-    in the classification, return the probability that a word in class is the
-    that word 
+    Given a word 'w', a classification  a dictionary with the count of words
+    in the classification and the total set of words in the class, 
+    return the probability that
+    a word in class is 'w' use normalisation 
     
-    P(w|c) = [count(w in c)] / (total words in c)
+    P(w|c) = [[count(w in c)] + 1 ] / [(total words in c) + total_set]
     
     """
-    return w_count[word]/sum(w_count.values())
+    return (w_count[word]+1 )/(sum(w_count.values()) + total_set)
+
     
-    return 1
+def prob_class(path, target_path): 
+    """
+    out off all the documents D, what are the odds that a document d belongs
+    to a class c
+    P(c) = total(c)/total(D)
+    assume the model has directories per class, so the probability is the total
+    of files in the class\' directory over total of documents in all
+    directories
+    """
+    #total files in path
+    total_files = sum([len(files) for r, d, files in walk(path)])
+    
+    #total files in target
+    total_tg = sum([len(files) for r, d, files in walk(target_path)])
+    
+    return total_tg/total_files
+
+
+
+def make_dic_w_c(full_w_c, dict_w_count, total_set):
+    """
+    Load the dictioanary_prob, for each word (key) give the 
+    ocurrences/total words in the class.
+    """
+    for w in full_w_c:
+        full_w_c[w] = dict_w_count[w]/total_set
+
+
+
+def prob_w_c(word: str, _class: classification):
+    """
+    Given a word w, what are the odds that it is in a document of class c?
+    P(c|w) =  LOG P(c) + SUM(LOG(P(w|c)))
+    """
+    pass
