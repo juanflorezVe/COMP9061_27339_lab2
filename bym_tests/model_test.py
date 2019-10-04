@@ -185,9 +185,39 @@ def test_prob_word_given_class(u_dict_w_count_comp, dict_univ):
     P(w|c) = count_of(w) / total of words in c
     """
 
-    denom_normal = sum(dict_univ.values())
+    denom_normal = len(dict_univ)
     p = bym.single_w_c("Java", u_dict_w_count_comp, denom_normal)
     manual_calc = ( u_dict_w_count_comp["Java"] + 1) / (sum(u_dict_w_count_comp.values()) + denom_normal)
-                 
-                 
     assert(manual_calc == p)
+
+
+def test_prob_c():
+    """
+    out off all the documents D, what are the odds that a document d belongs
+    to a class c
+    P(c) = total(c)/total(D)
+    assume the model has directories per class, so the probability is the total
+    of files in the class\' directory over total of documents in all
+    directories
+    
+    """
+    
+    p = bym.prob_class(path, path_comp)
+    assert(3/4 == p)
+    
+    
+def test_make_dic_w_c(dict_univ, u_dict_w_count_comp):
+
+    """
+    P(w|c) for each word in the dictionary, for the given class
+    """
+    dir_p_w_c = dict_univ.copy()
+    total_w_comp = sum(u_dict_w_count_comp.values())
+    total_w_univ = len(dict_univ)
+    denom = total_w_univ + total_w_comp
+    target_prob = {"Cloud": (5+1)/denom, "Spring": (1+1)/denom, 
+                   "Software": (1+1)/denom, "Referendum": (0+1)/denom,
+                    "Java": (1+1)/denom, "Election": (0+1)/denom}
+    
+    bym.make_dic_w_c(dir_p_w_c,  u_dict_w_count_comp)  #Refactor
+    assert(dir_p_w_c == target_prob)

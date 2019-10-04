@@ -89,7 +89,7 @@ def single_w_c(word, w_count: dict, total_set: int):
     Given a word 'w', a classification  a dictionary with the count of words
     in the classification and the total set of words in the class, 
     return the probability that
-    a word in class is 'w' use normalisation 
+    a word in class is 'w' use total_set as denominator for normalisation 
     
     P(w|c) = [[count(w in c)] + 1 ] / [(total words in c) + total_set]
     
@@ -97,7 +97,7 @@ def single_w_c(word, w_count: dict, total_set: int):
     return (w_count[word]+1 )/(sum(w_count.values()) + total_set)
 
     
-def prob_class(path, target_path): 
+def prob_class(root_path, class_path): 
     """
     out off all the documents D, what are the odds that a document d belongs
     to a class c
@@ -107,22 +107,23 @@ def prob_class(path, target_path):
     directories
     """
     #total files in path
-    total_files = sum([len(files) for r, d, files in walk(path)])
+    total_files = sum([len(files) for r, d, files in walk(root_path)])
     
     #total files in target
-    total_tg = sum([len(files) for r, d, files in walk(target_path)])
+    total_tg = sum([len(files) for r, d, files in walk(class_path)])
     
     return total_tg/total_files
 
 
 
-def make_dic_w_c(full_w_c, dict_w_count, total_set):
+def make_dic_w_c(dir_p_w_c, full_w_c):
     """
-    Load the dictioanary_prob, for each word (key) give the 
+    Load the dictionaty dir_p_w_c, for each word (key) give the 
     ocurrences/total words in the class.
     """
-    for w in full_w_c:
-        full_w_c[w] = dict_w_count[w]/total_set
+    total_set = sum(full_w_c.values())+len(full_w_c)
+    for w in dir_p_w_c:
+        dir_p_w_c[w] = (full_w_c[w]+1)/total_set
 
 
 
