@@ -17,7 +17,7 @@ Comp
 Cloud Cloud Spring
 Comp
 3
-Cloud Software
+Cloud Software Java
 Comp
 4
 Referendum Software Election
@@ -40,7 +40,7 @@ def doc2():  #Comp
 
 @pytest.fixture
 def doc3():  #Comp
-    return "Cloud Software"
+    return "Cloud Software Java"
 
 @pytest.fixture
 def doc4():  #Politics
@@ -65,7 +65,7 @@ def u_dict_w_count_comp():
     Dictionay with all the universal words but having amount in comp class
     """
     return {"Cloud": 5, "Spring": 1, "Software": 1, "Referendum": 0,
-            "Java": 1, "Election": 0}
+            "Java": 2, "Election": 0}
 
 @pytest.fixture
 def u_dict_w_count_politics():
@@ -81,7 +81,7 @@ def dict_w_count_comp():
     Dictionay with the words in comp class
     """
     return {"Cloud": 5, "Spring": 1, "Software": 1,
-            "Java": 1}
+            "Java": 2}
 
 @pytest.fixture
 def dict_w_count_politics():
@@ -215,9 +215,10 @@ def test_make_dic_w_c(dict_univ, u_dict_w_count_comp):
     total_w_comp = sum(u_dict_w_count_comp.values())
     total_w_univ = len(dict_univ)
     denom = total_w_univ + total_w_comp
+    assert(denom == 15)  # from the lecture's example
     target_prob = {"Cloud": (5+1)/denom, "Spring": (1+1)/denom, 
                    "Software": (1+1)/denom, "Referendum": (0+1)/denom,
-                    "Java": (1+1)/denom, "Election": (0+1)/denom}
+                    "Java": (2+1)/denom, "Election": (0+1)/denom}
     
     bym.make_dic_w_c(dir_p_w_c,  u_dict_w_count_comp)  #Refactor
     assert(dir_p_w_c == target_prob)
