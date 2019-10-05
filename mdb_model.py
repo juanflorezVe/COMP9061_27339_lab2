@@ -15,7 +15,7 @@ Using the bayesian library, create a naive Bayesian model for the data
 directory
 """
 
-path = ("mdb_model")
+path = "mdb_model"
 train_path = "data/train"
 
 try:
@@ -25,48 +25,53 @@ except OSError:
 else:
     print("Successfully created the directory %s " % path)
 
-full_dictionary = {}
+neg_dictionary = {}
+pos_dictionary = {}
 
-total_neg = bym.build_full_dic(train_path+"/neg", full_dictionary)
+total_neg = bym.load_count_dict(train_path+"/neg", neg_dictionary)
 
 print(total_neg)
 
-total_positive = bym.build_full_dic(train_path+"/pos", full_dictionary)
+total_positive = bym.load_count_dict(train_path+"/pos", pos_dictionary)
 
 print(total_positive)
 
+univ_dict = {**neg_dictionary, **pos_dictionary}
+
+print(len (univ_dict))
+
 f = open(path+"/dictionary.pkl", "wb")
-pickle.dump(full_dictionary, f)
+pickle.dump(univ_dict, f)
 f.close()
 
-# Create a copy of full_dict to record the occurrence of each word in
+# Create a copy of the universal dictionary  to record the occurrence of each word in
 # negative reviews
 
-count_neg = dict(full_dictionary)
+count_neg_dict = dict(univ_dict)
 
-total_neg = bym.count_words(train_path+"/neg", count_neg)
+total_neg = bym.load_count_dict(train_path + "/neg", count_neg_dict)
 
 n = open(path+"/neg_count.pkl", "wb")
-pickle.dump(count_neg, n)
+pickle.dump(count_neg_dict, n)
 n.close()
 
 
 # Create a copy of full_dict to record the occurrence of each word in
 # positive reviews
 
-count_pos = dict(full_dictionary)
+count_pos_dict = dict(univ_dict)
 
-total_pos = bym.count_words(train_path+"/pos", count_pos)
+total_pos = bym.load_count_dict(train_path + "/pos", count_pos_dict)
 
 p = open(path+"/pos_count.pkl", "wb")
-pickle.dump(count_pos, p)
+pickle.dump(count_pos_dict, p)
 p.close()
 
 # Create a new dictionary with the total of positives and negatives
 
 
-count_total = {key: count_pos.get(key, 0) + count_neg.get(key, 0)
-                for key in set(count_pos) | set(count_pos) | set(full_dictionary)
+count_total = {key: pos_dictionary.get(key, 0) + neg_dictionary.get(key, 0)
+                for key in set(pos_dictionary) | set(neg_dictionary) | set(univ_dict)
                }
 
 total_words = len(count_total)
@@ -75,11 +80,12 @@ t = open(path+"/tot_count.pkl", "wb")
 pickle.dump(count_total, t)
 t.close()
 
-all_words_positive = sum(count_pos.values())
-all_words_negative = sum(count_neg.values())
+all_words_positive = sum(pos_dictionary.values())
+all_words_negative = sum(neg_dictionary.values())
 
 print("total set of negative words {}".format(total_neg))
 print("total set of positive words {}".format(total_pos))
+print("total set of words {}".format(len(univ_dict)))
 print("total amount of words in negative docs {}".format(all_words_negative))
 print("total amount of words in positive docs {}".format(all_words_positive))
 print("total amount of words in all the docs {}".format(all_words_positive + 

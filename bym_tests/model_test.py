@@ -11,24 +11,14 @@ import pytest
 
 # Create a adictionary of words key = word and amount
 """
-Cloud Java Cloud
-Comp
-2
-Cloud Cloud Spring
-Comp
-3
-Cloud Software Java
-Comp
-4
-Referendum Software Election
-Politics
-Test
-5
-Java Software Java Election
+1  Cloud Java Cloud             Comp
+2  Cloud Cloud Spring           Comp
+3  Cloud Software Java          Comp
+4  Referendum Software Election Politics
 
+5  Java Software Java Election  Test
 
 """
-
 
 @pytest.fixture
 def doc1():  #Comp
@@ -150,14 +140,14 @@ def test_build_full_dictionary(mk_dat, dict_w_count_comp):
     assert(4 == count)
 
 
-def test_build_read_word_dict(mk_dat, dict_univ):
+def test_count_words_in_document(mk_dat, dict_univ):
     """
     Count the words in a document and update the dictionary
     """
     word_dict = dict_univ.copy()
     fileComp1_dict = {"Cloud": 2, "Spring": 0, "Software": 0,
-            "Referendum": 0, "Java": 1, "Election": 0}
-    count = bym.count_word_dict(fileComp1, word_dict)
+                      "Referendum": 0, "Java": 1, "Election": 0}
+    count = bym.count_word_document(fileComp1, word_dict)
     assert(fileComp1_dict == word_dict)
     assert(count == 6)
 
@@ -170,7 +160,7 @@ def test_count_words_in_directory(mk_dat, dict_univ,
     """
     counted_words = dict_univ.copy()  #Always create a copy 
 
-    total_words = bym.count_words(path_comp, counted_words)
+    total_words = bym.load_count_dict(path_comp, counted_words)
  
     assert(counted_words == u_dict_w_count_comp)
     assert(total_words == len(counted_words))

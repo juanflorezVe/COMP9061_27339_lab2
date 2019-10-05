@@ -16,12 +16,11 @@ class classification():
     def __repr__(self):
         return ("Class {}".format(self.name))
 
-        
 
-def count_word_dict(fileName, word_dict):
+def count_word_document(fileName, word_dict):
     """
     Given a fileName, add the words to word_dict
-    TODO: improve resialance, and handle exceptions
+    TODO: improve resilience, and handle exceptions
     """
     with open(fileName, "r") as fl:
         line_buffer = fl.readlines()
@@ -59,9 +58,9 @@ def build_full_dic(path, word_bag):
     return len(word_bag)
 
 
-def count_words(path, count_words):
+def load_count_dict(path, count_words):
     """
-    Given a path and a dictionary of words, count all the ocurrence of the
+    Given a path and a dictionary of words, count all the occurrences of the
     words in the directory. if a word is in a file, but not in the directory,
     it gets added.
     """
