@@ -110,7 +110,8 @@ dict_w_prob_neg = univ_dict.copy()
 bym.make_dic_w_c(dict_w_prob_pos, count_pos_dict)
 # build the directory with the probability for each word given negative doc
 bym.make_dic_w_c(dict_w_prob_neg, count_neg_dict)
-
+# =================================================================
+# ********** INFERENCE PART ***************************************
 # =================================================================
 # go through all the test/neg and check if it was assert as negative or not.
 
@@ -135,4 +136,31 @@ print("times it classified as negative {}".format(good_class))
 print("times it classified as positive {}".format(bad_class))
 
 print("accuracy of negatives {}".format(good_class/(good_class + bad_class)))
+
+# =================================================================
+# go through all the test/pos and check if it was assert as pos or not.
+
+pos_test_files = []
+for (dirpath, dirnames, filenames) in os.walk(test_path+"/pos"):
+    pos_test_files.extend(filenames)
+    break
+good_class = 0
+bad_class= 0
+
+for flp in pos_test_files:
+    with open(test_path+"/pos/"+flp, "r") as fp:
+        docum = fp.read()
+
+    prob_pos = bym.prob_class_doc(docum, dict_w_prob_pos, 0.5)
+    prob_neg = bym.prob_class_doc(docum, dict_w_prob_neg, 0.5)
+    if prob_pos > prob_neg:
+        good_class += 1
+    else:
+        bad_class += 1
+
+print("times it classified as positive {}".format(good_class))
+print("times it classified as negative {}".format(bad_class))
+
+print("accuracy of positives {}".format(good_class/(good_class + bad_class)))
+
 
