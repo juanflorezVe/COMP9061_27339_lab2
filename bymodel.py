@@ -7,6 +7,7 @@ Created on Tue Oct  1 15:11:14 2019
 Bayesian model library
 """
 from os import walk
+from math import log
 
 class classification():
 
@@ -105,30 +106,40 @@ def prob_class(root_path, class_path):
     of files in the class\' directory over total of documents in all
     directories
     """
-    #total files in path
+    # total files in path
     total_files = sum([len(files) for r, d, files in walk(root_path)])
     
-    #total files in target
+    # total files in target
     total_tg = sum([len(files) for r, d, files in walk(class_path)])
     
     return total_tg/total_files
 
 
-
 def make_dic_w_c(dir_p_w_c, full_w_c):
     """
     Load the dictionaty dir_p_w_c, for each word (key) give the 
-    ocurrences/total words in the class.
+    ocurrences/total words in the class taken from full_wc[word].
     """
     total_set = sum(full_w_c.values())+len(full_w_c)
     for w in dir_p_w_c:
         dir_p_w_c[w] = (full_w_c[w]+1)/total_set
 
 
-
-def prob_w_c(word: str, _class: classification):
+def prob_class_doc(document: str, dict_p_w_comp, p_c):
     """
+    :return probability of the document to be in a class c given the dictionary of frequency probability and
+    probability of a doc to be in a class c
+    :document: string of words
+    :dict_p_w_comp: dictionary with words as keys that store the frequency probability of the word inside the class
+    normalized already
     Given a word w, what are the odds that it is in a document of class c?
-    P(c|w) =  LOG P(c) + SUM(LOG(P(w|c)))
+    P(c|D) =  LOG P(c) + SUM(LOG(P(w|c)))
     """
-    pass
+    sum_of_log = 0
+    for w in document.split(' '):
+        try:
+            sum_of_log += log(dict_p_w_comp[w])
+        except KeyError:
+            sum_of_log += 0
+
+    return log(p_c) + sum_of_log

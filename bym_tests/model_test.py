@@ -5,6 +5,7 @@ Created on Tue Oct  1 13:41:41 2019
 
 @author: juanflorez
 """
+from math import log
 import bymodel as bym
 import os
 import pytest
@@ -80,13 +81,27 @@ def dict_w_count_politics():
     """
     return {"Software": 1, "Referendum": 1, "Election": 1}
 
+
 @pytest.fixture
 def total_words_politics(u_dict_w_count_politics):
     return sum(u_dict_w_count_politics.val())
 
+
 @pytest.fixture
 def total_words_comp(u_dict_w_count_comp):
     return sum(u_dict_w_count_comp.val())
+
+
+@pytest.fixture
+def dict_p_w_comp():
+    """
+    :return: Dictionary with the conditional probability of each of all the words in the
+    comp class
+    """
+    return {"Cloud": (5 + 1) / 15, "Spring": (1 + 1) / 15,
+            "Software": (1 + 1) / 15, "Referendum": (0 + 1) / 15,
+            "Java": (2 + 1) / 15, "Election": (0 + 1) / 15}
+
 
 # """ These are constant and are easy to keep just like this """"
 
@@ -210,3 +225,17 @@ def test_make_dic_w_c(dict_univ, u_dict_w_count_comp):
     
     bym.make_dic_w_c(dir_p_w_c,  u_dict_w_count_comp)  #Refactor
     assert(dir_p_w_c == target_prob)
+
+
+def test_prob_class_doc(doc5, dict_p_w_comp):
+    """
+    text_file, dict_p_w_c):
+    :param text_file: document to be classified
+    :param u_dict_p_w_c: dictionary with the probability of each word for that class
+    :return:  P(c|D) = log P(c) + SUM(log(P(w|c))
+
+    """
+    p_c = 3/4  # probabilty of doc being in class P(c)
+    p_doc5_comp = bym.prob_class_doc(doc5, dict_p_w_comp, p_c)
+    target_result = log(3/4) + log(3/15) + log(2/15) + log(3/15) + log(1/15)
+    assert(target_result == p_doc5_comp)

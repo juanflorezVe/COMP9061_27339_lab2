@@ -17,6 +17,7 @@ directory
 
 path = "mdb_model"
 train_path = "data/train"
+test_path = "data/test"
 
 try:
     os.mkdir(path)
@@ -92,9 +93,9 @@ print("total amount of words in all the docs {}".format(all_words_positive +
       all_words_negative))
 
 
-#===============================================================
+# ===============================================================
 #
-#===============================================================
+# ===============================================================
 
 neg_prob = bym.prob_class(train_path, train_path+"/neg")
 print("Probability of negative {}".format(neg_prob))
@@ -102,4 +103,36 @@ print("Probability of negative {}".format(neg_prob))
 pos_prob = bym.prob_class(train_path, train_path+"/pos")
 print("Probability of positive {}".format(neg_prob))
 
+dict_w_prob_pos = univ_dict.copy()
+dict_w_prob_neg = univ_dict.copy()
+
+# build the directory with the probability for each word given positive doc
+bym.make_dic_w_c(dict_w_prob_pos, count_pos_dict)
+# build the directory with the probability for each word given negative doc
+bym.make_dic_w_c(dict_w_prob_neg, count_neg_dict)
+
+# =================================================================
+# go through all the test/neg and check if it was assert as negative or not.
+
+neg_test_files = []
+for (dirpath, dirnames, filenames) in os.walk(test_path+"/neg"):
+    neg_test_files.extend(filenames)
+    break
+good_class = 1
+bad_class= 1
+
+for fl in neg_test_files:
+    with open(test_path+"/neg/"+fl, "r") as f:
+        docum = f.read()
+
+    prob_neg = bym.prob_class_doc(docum, dict_w_prob_neg, 0.5)
+    prob_pos = bym.prob_class_doc(docum, dict_w_prob_pos, 0.5)
+    if prob_neg > prob_pos:
+        good_class += 1
+    else:
+        bad_class += 1
+print("times it classified as negative {}".format(good_class))
+print("times it classified as positive {}".format(bad_class))
+
+print("accuracy of negatives {}".format(good_class/(good_class + bad_class)))
 
