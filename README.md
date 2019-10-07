@@ -2,13 +2,16 @@ This is my "not perfect" lab 2.
 It has three basic files:
 
 bym_tests/model_test.py --> Tests the methods in bymodel.py model (TDD)
+
 bymodel.py --> A generic set of methods to explore directories and calculate p(w|c) and p(c|W) assuming the docs are
                classified by directories.
-mdb_model.py --> Using the utilities from bymodel.py, it generates the model using the data set, and then classifies the docs in test subdirectory.
+mdb_model.py --> Using the utilities from bymodel.py, it generates the model using the data set, and then classifies
+                the docs in test subdirectory.
 
 
 Invoking it by time python3 mdb_model.py
-======================================
+
+
 total set of negative words 280617
 total set of positive words 280617
 total set of words 280617
@@ -27,5 +30,5 @@ accuracy of positives 0.62
 real	0m34.431s
 user	0m15.119s
 sys	0m6.656s
-======================================
+
 
