@@ -6,6 +6,8 @@ Created on Tue Oct  1 13:41:41 2019
 @author: juanflorez
 """
 from math import log
+import shutil
+
 import bymodel as bym
 import os
 import pytest
@@ -117,7 +119,7 @@ filePol1  = path_pol+"/pol_test1.txt"
 # """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 @pytest.fixture
-def mk_dat(doc1, doc2, doc3, doc4):
+def mk_dat(request, doc1, doc2, doc3, doc4):
     """
     Make the test data:
     all the folders and files
@@ -142,6 +144,9 @@ def mk_dat(doc1, doc2, doc3, doc4):
  
     with open(filePol1, "w") as fl4:
         fl4.write(doc4)
+
+    yield
+    shutil.rmtree(path)
 
 
 def test_build_full_dictionary(mk_dat, dict_w_count_comp):
@@ -195,7 +200,7 @@ def test_prob_word_given_class(u_dict_w_count_comp, dict_univ):
     assert(manual_calc == p)
 
 
-def test_prob_c():
+def test_prob_c(mk_dat):
     """
     out off all the documents D, what are the odds that a document d belongs
     to a class c
