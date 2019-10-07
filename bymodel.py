@@ -6,16 +6,8 @@ Created on Tue Oct  1 15:11:14 2019
 @author: juanflorez
 Bayesian model library
 """
-from os import walk
+import os
 from math import log
-
-class classification():
-
-    def __init__(self, name):
-        self.name = name
-    
-    def __repr__(self):
-        return ("Class {}".format(self.name))
 
 
 def count_word_document(fileName, word_dict):
@@ -44,15 +36,15 @@ def build_full_dic(path, word_bag):
     """
     # build a list of files
     files = []
-    for (dirpath, dirnames, filenames) in walk(path):
+    for (dirpath, dirnames, filenames) in os.walk(path):
         files.extend(filenames)
         break
     word_set = set()
-#   print("start the loop")
+    #   print("start the loop")
     for f in files:
-        tmp_words = set(open(path+"/"+f).read().split())
+        tmp_words = set(open(os.path.join(path, f)).read().split())
         word_set.update(dict.fromkeys(tmp_words))
-#       print("{} processed ".format(f))
+    #       print("{} processed ".format(f))
 
     word_bag.update(dict.fromkeys(word_set, 0))
 
@@ -66,13 +58,13 @@ def load_count_dict(path, count_words):
     it gets added.
     """
     files = []
-    for (dirpath, dirnames, filenames) in walk(path):
+    for (dirpath, dirnames, filenames) in os.walk(path):
         files.extend(filenames)
         break
 
     for f in files:
         print(f)
-        tmp_words = open(path+"/"+f).read().split()
+        tmp_words = open(os.path.join(path, f)).read().split()
 
         for w in tmp_words:
             if w not in count_words.keys():
@@ -113,10 +105,10 @@ def prob_class(root_path, class_path):
     :return: probability 0 <= p(d) <= 1
     """
     # total files in path
-    total_files = sum([len(files) for r, d, files in walk(root_path)])
+    total_files = sum([len(files) for r, d, files in os.walk(root_path)])
     
     # total files in target
-    total_tg = sum([len(files) for r, d, files in walk(class_path)])
+    total_tg = sum([len(files) for r, d, files in os.walk(class_path)])
     
     return total_tg/total_files
 
