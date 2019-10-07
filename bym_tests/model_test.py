@@ -108,13 +108,13 @@ def dict_p_w_comp():
 # """ These are constant and are easy to keep just like this """"
 
 path = "exmpleTest"
-path_comp = path+"/comp"
-path_pol = path+"/pol"
+path_comp = os.path.join(path, "comp")
+path_pol =  os.path.join(path, "pol")
 
-fileComp1 = path_comp+"/comp_test1.txt"
-fileComp2 = path_comp+"/comp_test2.txt"
-fileComp3 = path_comp+"/comp_test3.txt"
-filePol1  = path_pol+"/pol_test1.txt"
+fileComp1 = os.path.join(path_comp, "comp_test1.txt")
+fileComp2 = os.path.join(path_comp, "comp_test2.txt")
+fileComp3 = os.path.join(path_comp, "comp_test3.txt")
+filePol1  = os.path.join(path_pol, "pol_test1.txt")
 
 # """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
