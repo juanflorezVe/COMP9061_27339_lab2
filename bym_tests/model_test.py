@@ -188,7 +188,7 @@ def test_count_words_in_directory(mk_dat, dict_univ,
 
 def test_prob_word_given_class(u_dict_w_count_comp, dict_univ):
     """
-    Given a word, and a class, calculate the number p; 0 <= p <= 1
+    Given a word w, calculate the number p; 0 <= p <= 1
     count of appearences of w in all the docs in c, over the total
     amount of words in c.
     P(w|c) = count_of(w) / total of words in c

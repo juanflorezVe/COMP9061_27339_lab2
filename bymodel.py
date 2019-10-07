@@ -84,15 +84,17 @@ def load_count_dict(path, count_words):
     return len(count_words)  # should'n change... (?)
 
 
-def single_w_c(word, w_count: dict, total_set: int):
+def single_w_c(word: str, w_count: dict, total_set: int):
     """
-    Given a word 'w', a classification  a dictionary with the count of words
-    in the classification and the total set of words in the class, 
+    Given a word 'w',  a dictionary with the count of words
+    in the classification and the total set of words in the classification,
     return the probability that
-    a word in class is 'w' use total_set as denominator for normalisation 
-    
+    a word in the class is 'w' use total_set as denominator for normalisation
     P(w|c) = [[count(w in c)] + 1 ] / [(total words in c) + total_set]
-    
+
+    :word: the word  to evaluate
+    :w_count: directory with the frequencies off all the words in the dictionary
+    :total_set: the amount of words, used for normalization
     """
     return (w_count[word]+1 )/(sum(w_count.values()) + total_set)
 
@@ -105,6 +107,10 @@ def prob_class(root_path, class_path):
     assume the model has directories per class, so the probability is the total
     of files in the class\' directory over total of documents in all
     directories
+    TODO: make it an array of directories to have different number of classes
+    :root_path: Root directory, assumes it has one sub-directory per class
+    :class_path: sub-directory of root, assumed to have all the documents of one class.
+    :return: probability 0 <= p(d) <= 1
     """
     # total files in path
     total_files = sum([len(files) for r, d, files in walk(root_path)])
