@@ -20,12 +20,12 @@ total amount of words in positive docs 2958832
 total amount of words in all the docs 5844680
 Probability of negative 0.499980000799968
 Probability of positive 0.499980000799968
-times it classified as negative 1898
-times it classified as positive 104
-accuracy of negatives 0.948051948051948
-times it classified as positive 1240
-times it classified as negative 760
-accuracy of positives 0.62
+times it classified as negative 1742
+times it classified as positive 260
+accuracy of negatives 0.8701298701298701
+times it classified as positive 1560
+times it classified as negative 440
+accuracy of positives 0.78
 
 real	0m34.431s
 user	0m15.119s
