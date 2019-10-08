@@ -16,8 +16,8 @@ directory
 """
 
 path = "mdb_model"
-train_path = "data/train"
-test_path = "data/test"
+train_path = os.path.join("data", "train")
+test_path =  os.path.join("data", "test")
 
 try:
     os.mkdir(path)
@@ -29,19 +29,19 @@ else:
 neg_dictionary = {}
 pos_dictionary = {}
 
-total_neg = bym.load_count_dict(train_path+"/neg", neg_dictionary)
+total_neg = bym.load_count_dict(os.path.join(train_path, "neg"), neg_dictionary)
 
 print(total_neg)
 
-total_positive = bym.load_count_dict(train_path+"/pos", pos_dictionary)
+total_positive = bym.load_count_dict(os.path.join(train_path, "pos"), pos_dictionary)
 
 print(total_positive)
 
-univ_dict = {**neg_dictionary, **pos_dictionary}
+univ_dict = dict.fromkeys({**neg_dictionary, **pos_dictionary},0)
 
 print(len (univ_dict))
 
-f = open(path+"/dictionary.pkl", "wb")
+f = open(os.path.join(path, "dictionary.pkl"), "wb")
 pickle.dump(univ_dict, f)
 f.close()
 
@@ -50,9 +50,9 @@ f.close()
 
 count_neg_dict = dict(univ_dict)
 
-total_neg = bym.load_count_dict(train_path + "/neg", count_neg_dict)
+total_neg = bym.load_count_dict(os.path.join(train_path, "neg"), count_neg_dict)
 
-n = open(path+"/neg_count.pkl", "wb")
+n = open(os.path.join(path, "neg_count.pkl"), "wb")
 pickle.dump(count_neg_dict, n)
 n.close()
 
@@ -64,7 +64,7 @@ count_pos_dict = dict(univ_dict)
 
 total_pos = bym.load_count_dict(train_path + "/pos", count_pos_dict)
 
-p = open(path+"/pos_count.pkl", "wb")
+p = open(os.path.join(path, "pos_count.pkl"), "wb")
 pickle.dump(count_pos_dict, p)
 p.close()
 
@@ -77,7 +77,7 @@ count_total = {key: pos_dictionary.get(key, 0) + neg_dictionary.get(key, 0)
 
 total_words = len(count_total)
 
-t = open(path+"/tot_count.pkl", "wb")
+t = open(os.path.join(path, "tot_count.pkl"), "wb")
 pickle.dump(count_total, t)
 t.close()
 
@@ -116,14 +116,14 @@ bym.make_dic_w_c(dict_w_prob_neg, count_neg_dict)
 # go through all the test/neg and check if it was assert as negative or not.
 
 neg_test_files = []
-for (dirpath, dirnames, filenames) in os.walk(test_path+"/neg"):
+for (dirpath, dirnames, filenames) in os.walk(os.path.join(test_path, "neg")):
     neg_test_files.extend(filenames)
     break
 good_class = 1
 bad_class= 1
 
 for fl in neg_test_files:
-    with open(test_path+"/neg/"+fl, "r") as f:
+    with open(os.path.join(os.path.join(test_path,"neg",fl)), "r") as f:
         docum = f.read()
 
     prob_neg = bym.prob_class_doc(docum, dict_w_prob_neg, 0.5)
@@ -141,14 +141,14 @@ print("accuracy of negatives {}".format(good_class/(good_class + bad_class)))
 # go through all the test/pos and check if it was assert as pos or not.
 
 pos_test_files = []
-for (dirpath, dirnames, filenames) in os.walk(test_path+"/pos"):
+for (dirpath, dirnames, filenames) in os.walk(os.path.join(test_path, "pos")):
     pos_test_files.extend(filenames)
     break
 good_class = 0
 bad_class= 0
 
 for flp in pos_test_files:
-    with open(test_path+"/pos/"+flp, "r") as fp:
+    with open(os.path.join(test_path,"pos", flp), "r") as fp:
         docum = fp.read()
 
     prob_pos = bym.prob_class_doc(docum, dict_w_prob_pos, 0.5)
